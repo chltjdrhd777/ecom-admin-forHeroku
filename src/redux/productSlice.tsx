@@ -35,7 +35,7 @@ export const getAllProducts = createAsyncThunk("product/getProduct", async () =>
 const product = createSlice({
   name: "product",
 
-  initialState: { products: {}, loading: "ready", error: { success: false, errorInfo: undefined } } as ProductState,
+  initialState: { products: { success: false, productList: [] }, loading: "ready", error: { success: false, errorInfo: undefined } } as ProductState,
 
   reducers: {},
   extraReducers: (builder) => {

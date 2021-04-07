@@ -68,27 +68,6 @@ function Products() {
     dispatch(setProducts(form));
     handleAddClose();
     dispatch(categoryLoading("finisihed"));
-
-    /* if (parseInt(price[0]).toString() === "NaN") {
-      console.log("not number");
-    } else {
-      dispatch(categoryLoading("pending"));
-      const form = new FormData();
-
-      form.append("name", name);
-      form.append("price", price);
-
-      form.append("description", description);
-      form.append("quantity", quantity.toString().replace(/(^0+)/, ""));
-      for (let pic of productPictures) {
-        form.append("productPictures", pic);
-      }
-      form.append("category", categoryId);
-
-      dispatch(setProducts(form));
-      handleAddClose();
-      dispatch(categoryLoading("finisihed"));
-    } */
   };
 
   const addModalBody = () => {
@@ -140,7 +119,7 @@ function Products() {
           }}
         >
           <option>select category</option>
-          {categoryList !== undefined &&
+          {categoryList &&
             createCategoryList(categoryList).map((e) => (
               <option key={e.value} value={e.value}>
                 {e.name}
@@ -210,8 +189,8 @@ function Products() {
           <Col style={{ display: "flex", flexDirection: "column" }}>
             <label className="product_detail_key">Product Pictures</label>
             <div>
-              {productInfo !== undefined &&
-                productInfo.productPictures !== undefined &&
+              {productInfo &&
+                productInfo.productPictures &&
                 productInfo.productPictures.map((productPic: any) => (
                   <img key={productPic._id} src={`http://localhost:8080/public/${productPic.img}`} alt="" className="product_detail_img" />
                 ))}
@@ -239,7 +218,7 @@ function Products() {
           </tr>
         </thead>
         <tbody>
-          {productList !== undefined &&
+          {productList.length > 0 &&
             productList.map((product, index) => {
               return (
                 <tr
