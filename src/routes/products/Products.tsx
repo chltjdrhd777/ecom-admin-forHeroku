@@ -192,7 +192,16 @@ function Products() {
               {productInfo &&
                 productInfo.productPictures &&
                 productInfo.productPictures.map((productPic: any) => (
-                  <img key={productPic._id} src={`http://localhost:8080/public/${productPic.img}`} alt="" className="product_detail_img" />
+                  <img
+                    key={productPic._id}
+                    src={
+                      window.location.hostname === "localhost"
+                        ? `http://localhost:8080/public/${productPic.img}`
+                        : `https://flipkartserverdelpoyed.herokuapp.com/public/${productPic.img}`
+                    }
+                    alt=""
+                    className="product_detail_img"
+                  />
                 ))}
             </div>
           </Col>
