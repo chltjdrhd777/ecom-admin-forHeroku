@@ -40,9 +40,9 @@ const product = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getAllProducts.fulfilled, (state, { payload }) => {
-      if (payload.status === 400) {
+      if (payload && payload.status === 400) {
         state.error = { success: false, errorInfo: payload };
-      } else {
+      } else if (payload && payload.status === 200) {
         state.error = { success: true, errorInfo: undefined };
         state.products = payload.data;
       }

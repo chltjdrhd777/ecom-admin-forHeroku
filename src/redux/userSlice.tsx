@@ -82,21 +82,15 @@ const user = createSlice({
   extraReducers: (builder) => {
     //login
     builder.addCase(userLogins.fulfilled, (state, { payload }) => {
-      const { targetUser } = payload.data;
-      const { targetAdmin } = payload.data;
-      if (payload.status === 400) {
+      console.log(payload);
+      if (payload && payload.status === 400) {
         state.error = { success: false, errorInfo: payload };
-      } else {
-        if (targetUser) {
-          localStorage.setItem("token", targetUser.token);
-          localStorage.setItem(
-            "userInfo",
-            JSON.stringify({
-              email: targetUser.email,
-              role: targetUser.role,
-              _id: targetUser._id,
-            })
-          );
+      } else if (payload && payload.status === 200) {
+        if (payload.data && payload.data.targetUser) {
+          const { targetUser } = payload.data;
+          targetUser.token && localStorage.setItem("token", targetUser.token);
+
+          localStorage.setItem("userInfo", JSON.stringify({ email: targetUser.email, role: targetUser.role, _id: targetUser._id }));
 
           state.userInfo = {
             email: targetUser.email,
@@ -104,8 +98,13 @@ const user = createSlice({
             _id: targetUser._id,
             token: targetUser.token,
           };
-        } else {
+        }
+
+        if (payload.data && payload.data.targetAdmin) {
+          const { targetAdmin } = payload.data;
+
           localStorage.setItem("token", targetAdmin.token);
+
           localStorage.setItem(
             "userInfo",
             JSON.stringify({
@@ -123,6 +122,45 @@ const user = createSlice({
           };
         }
       }
+      /*     if (payload && payload.status === 400) {
+        state.error = { success: false, errorInfo: payload };
+      } else if (payload && payload.status === 200) {
+        if (payload.targetUser) {
+          localStorage.setItem("token", payload.targetUser.token);
+          localStorage.setItem(
+            "userInfo",
+            JSON.stringify({
+              email: payload.targetUser.email,
+              role: payload.targetUser.role,
+              _id: payload.targetUser._id,
+            })
+          );
+
+          state.userInfo = {
+            email: payload.targetUser.email,
+            role: payload.targetUser.role,
+            _id: payload.targetUser._id,
+            token: payload.targetUser.token,
+          };
+        } else {
+          localStorage.setItem("token", payload.targetAdmin.token);
+          localStorage.setItem(
+            "userInfo",
+            JSON.stringify({
+              email: payload.targetAdmin.email,
+              role: payload.targetAdmin.role,
+              _id: payload.targetAdmin._id,
+            })
+          );
+
+          state.userInfo = {
+            email: payload.targetAdmin.email,
+            role: payload.targetAdmin.role,
+            _id: payload.targetAdmin._id,
+            token: payload.targetAdmin.token,
+          };
+        }
+      } */
     });
 
     //register

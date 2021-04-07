@@ -204,6 +204,7 @@ function Products() {
   //* for table rendering
   const { productList } = useSelector(selectProduct).products;
 
+  console.log(productList);
   const tableRendering = () => {
     return (
       <Table responsive="sm">
@@ -218,27 +219,26 @@ function Products() {
           </tr>
         </thead>
         <tbody>
-          {productList.length > 0 &&
-            productList.map((product, index) => {
-              return (
-                <tr
-                  key={product._id}
-                  onClick={() => {
-                    handleProductShow();
+          {productList.map((product, index) => {
+            return (
+              <tr
+                key={product._id}
+                onClick={() => {
+                  handleProductShow();
 
-                    setProductInfo(product);
-                  }}
-                  className="product_tableRows"
-                >
-                  <td>{index + 1}</td>
-                  <td>{product.name}</td>
-                  <td>{product.price}</td>
-                  <td>{product.quantity}</td>
-                  <td>{product.description}</td>
-                  <td>{product.category.name}</td>
-                </tr>
-              );
-            })}
+                  setProductInfo(product);
+                }}
+                className="product_tableRows"
+              >
+                <td>{index + 1}</td>
+                <td>{product.name}</td>
+                <td>{product.price}</td>
+                <td>{product.quantity}</td>
+                <td>{product.description}</td>
+                <td>{product.category && product.category.name}</td>
+              </tr>
+            );
+          })}
         </tbody>
       </Table>
     );
