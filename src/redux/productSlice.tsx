@@ -31,6 +31,11 @@ export const getAllProducts = createAsyncThunk("product/getProduct", async () =>
     return err.response;
   }
 });
+
+export const deleteProducts = createAsyncThunk("product/deleteProduct", async (payload: number) => {
+  const response = await axios.post("product/deleteProduct", { _id: payload }, { withCredentials: true });
+  console.log(response);
+});
 //structure
 const product = createSlice({
   name: "product",

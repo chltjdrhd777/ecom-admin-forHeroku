@@ -7,7 +7,7 @@ import Input from "../../components/UI/Input/Input";
 import Modals from "../../components/UI/modal/Modals";
 import { categoryLoading, createCategories, getAllCategories } from "../../redux/categorySlice";
 import { selectCategory, selectProduct } from "../../redux/mainReducer";
-import { setProducts } from "../../redux/productSlice";
+import { deleteProducts, getAllProducts, setProducts } from "../../redux/productSlice";
 
 function Products() {
   const dispatch = useDispatch();
@@ -152,8 +152,17 @@ function Products() {
   const [productInfo, setProductInfo] = useState({} as any);
   const handleProductShow = () => setProductShow(true);
   const handleProductClose = () => setProductShow(false);
-  const handleProductChanges = () => {};
-  const productModalBody = (productInfo: any) => {
+  const handleProductChanges = () => {
+    console.log(productInfo);
+    new Promise((resolve) => {
+      resolve(dispatch(deleteProducts(productInfo._id)));
+    }).then(() => {
+      dispatch(getAllProducts);
+      document.location.reload();
+      handleProductClose();
+    });
+  };
+  const ProductModalBody = (productInfo: any) => {
     return (
       <ProductDetailModalSection>
         <Row>
@@ -212,8 +221,6 @@ function Products() {
 
   //* for table rendering
   const { productList } = useSelector(selectProduct).products;
-
-  console.log(productList);
   const tableRendering = () => {
     return (
       <Table responsive="sm">
@@ -277,8 +284,9 @@ function Products() {
         show={productShow}
         handleChanges={handleProductChanges}
         handleClose={handleProductClose}
-        modalBody={() => productModalBody(productInfo)}
+        modalBody={() => ProductModalBody(productInfo)}
         title="product detail"
+        saveMessage="delete this item"
         size="lg"
       />
     </Layout>
